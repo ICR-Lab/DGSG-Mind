@@ -13,7 +13,6 @@
   <body>
     <header class="site-header">
       <nav class="nav" aria-label="Primary navigation">
-        <a href="#abstract">Abstract</a>
         <a href="#method">Method</a>
         <a href="#dynamic-update">Dynamic Update</a>
         <a href="#gaussian-mind">3D GS Mind</a>
@@ -53,15 +52,6 @@
               Compared with previous state-of-the-art systems, <strong><em>DGSG-Mind</em></strong> offers a more complete functional framework for long-term embodied scene understanding in dynamic environments. It jointly maintains a hybrid instance-aware 3D Gaussian representation and a hierarchical scene graph, supporting high-quality reconstruction, semantic mapping, accurate visual relocalization, and instance-level dynamic updates. Moreover, it leverages RoI Gaussian-rendered visual cues together with 3D semantic and spatial relations for multimodal reasoning. These capabilities allow <strong><em>DGSG-Mind</em></strong> to support long-term robotic tasks in dynamic real-world environments.
             </figcaption>
           </figure>
-        </div>
-      </section>
-
-      <section id="abstract" class="text-section">
-        <div class="content narrow">
-          <h2>Abstract</h2>
-          <p>
-            Integrating open-vocabulary semantic information into dynamic 3D scene representations is essential for long-term embodied spatial perception. However, existing methods often suffer from fragile instance association due to incomplete cross-view cues, while their limited ability to handle topological changes restricts long-term robotic task execution. In addition, current 3D scene understanding methods either rely on simple feature matching without explicit spatial reasoning or assume offline ground-truth 3D geometry. To address these challenges, we present <strong><em>DGSG-Mind</em></strong>, a dynamic instance-aware 3D Gaussian scene graph system with an embodied reasoning agent. Our system couples explicit 3D Gaussians with a probabilistic voxel grid to build a hybrid instance-aware representation, enabling cross-modal instance fusion and incremental semantic mapping. To handle dynamic changes, we perform Gaussian-based visual relocalization and apply localized masked refinement guided by geometric-semantic consistency. We then construct a hierarchical scene graph from the Gaussian map and develop the <strong><em>3D Gaussian Mind</em></strong>, which integrates hierarchical structural relations, spatial-semantic information, and visually annotated RoI Gaussian renderings for multimodal reasoning. Extensive experiments show that DGSG-Mind achieves SOTA zero-shot 3D visual grounding among methods operating on self-reconstructed maps, while also delivering strong performance in open-vocabulary semantic segmentation and scene reconstruction. We further deploy <strong><em>DGSG-Mind</em></strong> on real-world robots to validate its target-oriented reasoning and dynamic update capabilities.
-          </p>
         </div>
       </section>
 
