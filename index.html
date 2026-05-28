@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="DGSG-Mind project page.">
+    <title>DGSG-Mind</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#dynamic-update">Dynamic Update</a>
+        <a href="#gaussian-mind">3D GS Mind</a>
+        <a href="#semantic-segmentation">3DOVSeg</a>
+        <a href="#visualization">3DVG</a>
+        <a href="#reconstruction">Reconstruction</a>
+        <a href="#manipulation">Manipulation</a>
+        <a href="#navigation">Navigation</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-inner">
+          <h1>
+            <span class="title-line">
+              <span class="title-green">D</span><span class="title-red">G</span><span class="title-blue">SG</span><span class="title-gray">-</span><span class="title-orange">Mind</span>:
+              <span class="title-green">Dynamic</span>
+              <span class="title-red">3D Gaussian</span>
+              <span class="title-blue">Scene Graphs</span>
+            </span>
+            <span class="title-line">
+              for Long-Term <span class="title-orange">Scene Understanding and Grounding</span>
+            </span>
+          </h1>
+          <p class="authors">Anonymous Authors</p>
+          <p class="submission-note">IEEE Robotics and Automation Letters 2026 Submission</p>
+        </div>
+      </section>
+
+      <section class="figure-band teaser" aria-labelledby="teaser-title">
+        <div class="content">
+          <h2 id="teaser-title">Teaser</h2>
+          <figure class="primary-figure">
+            <img src="assets/images/teaser-original.png" alt="DGSG-Mind teaser comparing scene understanding capabilities across systems.">
+            <figcaption>
+              Compared with previous state-of-the-art systems, <strong><em>DGSG-Mind</em></strong> offers a more complete functional framework for long-term embodied scene understanding in dynamic environments. It jointly maintains a hybrid instance-aware 3D Gaussian representation and a hierarchical scene graph, supporting high-quality reconstruction, semantic mapping, accurate visual relocalization, and instance-level dynamic updates. Moreover, it leverages RoI Gaussian-rendered visual cues together with 3D semantic and spatial relations for multimodal reasoning. These capabilities allow <strong><em>DGSG-Mind</em></strong> to support long-term robotic tasks in dynamic real-world environments.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="abstract" class="text-section">
+        <div class="content narrow">
+          <h2>Abstract</h2>
+          <p>
+            Integrating open-vocabulary semantic information into dynamic 3D scene representations is essential for long-term embodied spatial perception. However, existing methods often suffer from fragile instance association due to incomplete cross-view cues, while their limited ability to handle topological changes restricts long-term robotic task execution. In addition, current 3D scene understanding methods either rely on simple feature matching without explicit spatial reasoning or assume offline ground-truth 3D geometry. To address these challenges, we present <strong><em>DGSG-Mind</em></strong>, a dynamic instance-aware 3D Gaussian scene graph system with an embodied reasoning agent. Our system couples explicit 3D Gaussians with a probabilistic voxel grid to build a hybrid instance-aware representation, enabling cross-modal instance fusion and incremental semantic mapping. To handle dynamic changes, we perform Gaussian-based visual relocalization and apply localized masked refinement guided by geometric-semantic consistency. We then construct a hierarchical scene graph from the Gaussian map and develop the <strong><em>3D Gaussian Mind</em></strong>, which integrates hierarchical structural relations, spatial-semantic information, and visually annotated RoI Gaussian renderings for multimodal reasoning. Extensive experiments show that DGSG-Mind achieves SOTA zero-shot 3D visual grounding among methods operating on self-reconstructed maps, while also delivering strong performance in open-vocabulary semantic segmentation and scene reconstruction. We further deploy <strong><em>DGSG-Mind</em></strong> on real-world robots to validate its target-oriented reasoning and dynamic update capabilities.
+          </p>
+        </div>
+      </section>
+
+      <section id="method" class="figure-band">
+        <div class="content">
+          <h2>Method</h2>
+          <figure class="primary-figure">
+            <img src="assets/images/method-original.png" alt="System overview of DGSG-Mind.">
+            <figcaption>
+              <strong><em>System Overview of DGSG-Mind.</em></strong> Given a posed RGB-D sequence, DGSG-Mind extracts open-vocabulary instance masks and semantic features, and integrates them into a hybrid 3D Gaussian instance representation. Cross-modal association leverages the sparse probabilistic voxel grid to link 2D observations with persistent 3D Gaussian instances, guide new Gaussian initialization, and support multi-view optimization with photometric, depth, scale, and normal regularization. For dynamic scenes, localized masked refinement updates newly appeared or removed objects without re-optimizing the entire map. The instance-aware Gaussian map is further abstracted into a hierarchical 3D scene graph, enabling the <em>3D Gaussian Mind</em> to perform zero-shot 3D visual grounding and spatial reasoning from rendered RoI-views and structured 3D relations.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="dynamic-update" class="figure-band method-pair-section">
+        <div class="content">
+          <div class="method-pair">
+            <article class="method-panel">
+              <h2>Dynamic Scene Update</h2>
+              <figure class="side-figure">
+                <img src="assets/images/dynamic-update-original.png" alt="Dynamic scene update pipeline.">
+                <figcaption>
+                  <strong>Dynamic Scene Update:</strong> Get current camera view, we first estimate a coarse camera pose by a fine-tuning ACE model and refine it on the 3D Gaussian map. With the refined pose, visible instances are evaluated by joint geometric-semantic consistency to detect removed objects, while residual detection identifies newly appeared ones. The Gaussian map is then optimized by localized masked refinement, and the scene graph is synchronized with the resulting object additions and removals.
+                </figcaption>
+              </figure>
+            </article>
+            <article id="gaussian-mind" class="method-panel">
+              <h2>3D Gaussian Mind</h2>
+              <figure class="side-figure compact">
+                <img src="assets/images/3d-gaussian-mind-original.png" alt="3D Gaussian Mind reasoning framework.">
+                <figcaption>
+                  <strong>3D Gaussian Mind:</strong> By integrating natural language queries, structured 3D scene graphs, and generated annotated Gaussian views (RoI images), this framework leverages a Vision Language Model for joint spatial reasoning and object localization.
+                </figcaption>
+              </figure>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="semantic-segmentation" class="segmentation-section">
+        <div class="content">
+          <h2>3D Open-Vocabulary Semantic Segmentation</h2>
+          <div class="dataset-tabs segmentation-tabs" role="tablist" aria-label="Semantic segmentation dataset">
+            <button class="segmentation-tab dataset-tab is-active" type="button" role="tab" aria-selected="true" data-segmentation="replica">Replica</button>
+            <button class="segmentation-tab dataset-tab" type="button" role="tab" aria-selected="false" data-segmentation="scannet">ScanNet</button>
+            <button class="segmentation-tab dataset-tab" type="button" role="tab" aria-selected="false" data-segmentation="real">Real-World</button>
+          </div>
+          <div class="segmentation-carousel" aria-live="polite">
+            <button class="segmentation-arrow" type="button" data-seg-direction="-1" aria-label="Previous segmentation scenes">&#8249;</button>
+            <div class="segmentation-gallery" id="segmentation-gallery"></div>
+            <button class="segmentation-arrow" type="button" data-seg-direction="1" aria-label="Next segmentation scenes">&#8250;</button>
+          </div>
+          <div class="segmentation-page" id="segmentation-page">1 / 2</div>
+        </div>
+      </section>
+
+      <section id="visualization" class="figure-band">
+        <div class="content">
+          <h2>3D Visual Grounding</h2>
+          <figure class="primary-figure">
+            <img src="assets/images/3dvg-original.png" alt="Qualitative 3D visual grounding results on ScanRefer and Nr3D.">
+            <figcaption>
+              <strong>Qualitative results of 3DVG.</strong> DGSG-Mind localizes target objects from free-form language queries on self-reconstructed 3D Gaussian maps, comparing predicted boxes with ground truth and representative baselines on ScanRefer and Nr3D scenes.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="reconstruction" class="reconstruction-section">
+        <div class="content">
+          <h2>Reconstruction Quality</h2>
+          <div class="reconstruction-controls" aria-label="Reconstruction demo selector">
+            <div class="dataset-tabs" role="tablist" aria-label="Dataset">
+              <button class="dataset-tab is-active" type="button" role="tab" aria-selected="true" data-dataset="replica">Replica</button>
+              <button class="dataset-tab" type="button" role="tab" aria-selected="false" data-dataset="scannet">ScanNet</button>
+              <button class="dataset-tab" type="button" role="tab" aria-selected="false" data-dataset="real">Real-World</button>
+            </div>
+          </div>
+          <div class="reconstruction-carousel" aria-live="polite">
+            <button class="reconstruction-arrow" type="button" data-rec-direction="-1" aria-label="Previous reconstruction scene">&#8249;</button>
+            <figure class="reconstruction-viewer">
+              <img id="reconstruction-demo" src="Reconstruction_demo/replica-room0.gif" alt="Replica room0 reconstruction demo.">
+              <figcaption id="reconstruction-label">Replica / room0</figcaption>
+            </figure>
+            <button class="reconstruction-arrow" type="button" data-rec-direction="1" aria-label="Next reconstruction scene">&#8250;</button>
+          </div>
+          <div class="reconstruction-page" id="reconstruction-page">1 / 2</div>
+        </div>
+      </section>
+
+      <section id="manipulation" class="video-section">
+        <div class="content">
+          <h2>Manipulation</h2>
+          <video class="project-video" controls playsinline preload="metadata" poster="assets/images/manipulation-poster.png">
+            <source src="real-exp/manip.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </section>
+
+      <section id="navigation" class="video-section">
+        <div class="content">
+          <h2>Navigation</h2>
+          <video class="project-video" controls playsinline preload="metadata" poster="assets/images/navigation-poster.png">
+            <source src="real-exp/s1_video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>DGSG-Mind. IEEE Robotics and Automation Letters 2026 Submission.</p>
+    </footer>
+    <script>
+      const reconstructionTabs = document.querySelectorAll(".reconstruction-section .dataset-tab");
+      const reconstructionImage = document.querySelector("#reconstruction-demo");
+      const reconstructionLabel = document.querySelector("#reconstruction-label");
+      const reconstructionPage = document.querySelector("#reconstruction-page");
+      const reconstructionArrows = document.querySelectorAll(".reconstruction-arrow");
+      const reconstructionData = {
+        replica: [
+          { src: "Reconstruction_demo/replica-room0.gif", label: "Replica / room0", alt: "Replica room0 reconstruction demo." },
+          { src: "Reconstruction_demo/replica-office3.gif", label: "Replica / office3", alt: "Replica office3 reconstruction demo." }
+        ],
+        scannet: [
+          { src: "Reconstruction_demo/scannet-scene0000_00.gif", label: "ScanNet / scene0000_00", alt: "ScanNet scene0000_00 reconstruction demo." },
+          { src: "Reconstruction_demo/scannet-scene0030_00.gif", label: "ScanNet / scene0030_00", alt: "ScanNet scene0030_00 reconstruction demo." }
+        ],
+        real: [
+          { src: "Reconstruction_demo/real-scene1.gif", label: "Real-World / scene1", alt: "Real-world scene1 reconstruction demo." },
+          { src: "Reconstruction_demo/real-scene2.gif", label: "Real-World / scene2", alt: "Real-world scene2 reconstruction demo." }
+        ]
+      };
+      const reconstructionState = {
+        dataset: "replica",
+        page: 0
+      };
+
+      function renderReconstructionDemo() {
+        const scenes = reconstructionData[reconstructionState.dataset];
+        const scene = scenes[reconstructionState.page];
+        reconstructionImage.src = scene.src;
+        reconstructionImage.alt = scene.alt;
+        reconstructionLabel.textContent = scene.label;
+        reconstructionPage.textContent = `${reconstructionState.page + 1} / ${scenes.length}`;
+      }
+
+      reconstructionTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          reconstructionTabs.forEach((item) => {
+            const isSelected = item === tab;
+            item.classList.toggle("is-active", isSelected);
+            item.setAttribute("aria-selected", String(isSelected));
+          });
+
+          reconstructionState.dataset = tab.dataset.dataset;
+          reconstructionState.page = 0;
+          renderReconstructionDemo();
+        });
+      });
+
+      reconstructionArrows.forEach((arrow) => {
+        arrow.addEventListener("click", () => {
+          const scenes = reconstructionData[reconstructionState.dataset];
+          const direction = Number(arrow.dataset.recDirection);
+          reconstructionState.page = (reconstructionState.page + direction + scenes.length) % scenes.length;
+          renderReconstructionDemo();
+        });
+      });
+
+      const segmentationData = {
+        replica: [
+          { src: "3DovSeg/repilca-room0.png", label: "room0", alt: "Replica room0 open-vocabulary semantic segmentation result." },
+          { src: "3DovSeg/replica-room1.png", label: "room1", alt: "Replica room1 open-vocabulary semantic segmentation result." },
+          { src: "3DovSeg/replica-room2.png", label: "room2", alt: "Replica room2 open-vocabulary semantic segmentation result." },
+          { src: "3DovSeg/replica-office3.png", label: "office3", alt: "Replica office3 open-vocabulary semantic segmentation result." }
+        ],
+        scannet: [
+          { src: "3DovSeg/scannet0000_00.png", label: "scene0000_00", alt: "ScanNet scene0000_00 open-vocabulary semantic segmentation result." },
+          { src: "3DovSeg/scannet0030_00.png", label: "scene0030_00", alt: "ScanNet scene0030_00 open-vocabulary semantic segmentation result." },
+          { src: "3DovSeg/scannet0222_00.png", label: "scene0222_00", alt: "ScanNet scene0222_00 open-vocabulary semantic segmentation result." },
+          { src: "3DovSeg/scannet0378_00.png", label: "scene0378_00", alt: "ScanNet scene0378_00 open-vocabulary semantic segmentation result." }
+        ],
+        real: [
+          { src: "3DovSeg/real0.png", label: "scene0", alt: "Real-world scene 0 open-vocabulary semantic segmentation result." },
+          { src: "3DovSeg/real1.png", label: "scene1", alt: "Real-world scene 1 open-vocabulary semantic segmentation result." },
+          { src: "3DovSeg/real2.png", label: "scene2", alt: "Real-world scene 2 open-vocabulary semantic segmentation result." },
+          { src: "3DovSeg/real3.png", label: "scene3", alt: "Real-world scene 3 open-vocabulary semantic segmentation result." }
+        ]
+      };
+      const segmentationTabs = document.querySelectorAll(".segmentation-tab");
+      const segmentationGallery = document.querySelector("#segmentation-gallery");
+      const segmentationPage = document.querySelector("#segmentation-page");
+      const segmentationArrows = document.querySelectorAll(".segmentation-arrow");
+      const segmentationState = {
+        dataset: "replica",
+        page: 0,
+        pageSize: 2
+      };
+
+      function renderSegmentationGallery() {
+        const scenes = segmentationData[segmentationState.dataset];
+        const pageCount = Math.ceil(scenes.length / segmentationState.pageSize);
+        const start = segmentationState.page * segmentationState.pageSize;
+        const visibleScenes = scenes.slice(start, start + segmentationState.pageSize);
+
+        segmentationGallery.innerHTML = visibleScenes.map((scene) => `
+          <figure class="segmentation-card">
+            <img src="${scene.src}" alt="${scene.alt}">
+            <figcaption>${scene.label}</figcaption>
+          </figure>
+        `).join("");
+        segmentationPage.textContent = `${segmentationState.page + 1} / ${pageCount}`;
+      }
+
+      segmentationTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          segmentationTabs.forEach((item) => {
+            const isSelected = item === tab;
+            item.classList.toggle("is-active", isSelected);
+            item.setAttribute("aria-selected", String(isSelected));
+          });
+
+          segmentationState.dataset = tab.dataset.segmentation;
+          segmentationState.page = 0;
+          renderSegmentationGallery();
+        });
+      });
+
+      segmentationArrows.forEach((arrow) => {
+        arrow.addEventListener("click", () => {
+          const scenes = segmentationData[segmentationState.dataset];
+          const pageCount = Math.ceil(scenes.length / segmentationState.pageSize);
+          const direction = Number(arrow.dataset.segDirection);
+          segmentationState.page = (segmentationState.page + direction + pageCount) % pageCount;
+          renderSegmentationGallery();
+        });
+      });
+
+      renderSegmentationGallery();
+      renderReconstructionDemo();
+    </script>
+  </body>
+</html>
