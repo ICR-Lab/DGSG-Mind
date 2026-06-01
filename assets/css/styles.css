@@ -159,6 +159,37 @@ h2 {
   font-size: 0.98rem;
 }
 
+.project-links {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.project-link {
+  min-width: 112px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #363636;
+  color: #fff;
+  font-size: 0.96rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.project-link:hover,
+.project-link:focus-visible {
+  background: var(--accent);
+  outline: none;
+}
+
+.project-link.is-disabled {
+  background: #ececec;
+  color: #777;
+  cursor: default;
+}
+
 .content {
   width: min(1050px, calc(100% - 32px));
   margin: 0 auto;
